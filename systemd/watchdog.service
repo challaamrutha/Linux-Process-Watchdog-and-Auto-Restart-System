@@ -1,0 +1,21 @@
+[Unit]
+Description=Process Watchdog and Auto-Restart Service
+After=network.target
+
+[Service]
+Type=notify
+NotifyAccess=main
+WatchdogSec=30
+ExecStart=/usr/bin/python3 /opt/watchdog/watchdog.py run --config /opt/watchdog/config/watchdog.json
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+RestartSec=3
+User=watchdog
+Group=watchdog
+WorkingDirectory=/opt/watchdog
+NoNewPrivileges=true
+ProtectSystem=full
+ReadWritePaths=/opt/watchdog/logs /opt/watchdog/state
+
+[Install]
+WantedBy=multi-user.target

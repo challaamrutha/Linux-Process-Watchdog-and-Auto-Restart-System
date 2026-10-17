@@ -1,0 +1,23 @@
+{
+  "check_interval": 1,
+  "log_dir": "logs",
+  "state_file": "state/state.json",
+  "dashboard": { "host": "127.0.0.1", "port": 8080 },
+  "alerts": {
+    "webhook": "",
+    "email": { "enabled": false, "smtp_host": "smtp.example.com", "smtp_port": 587,
+               "user": "", "password": "", "from": "watchdog@example.com", "to": "you@example.com" }
+  },
+  "processes": [
+    { "name": "stable-service", "command": "{python} demo/stable_service.py",
+      "policy": "always", "max_retries": 5, "backoff_base": 1, "mem_limit_mb": 128, "cpu_limit": 80 },
+    { "name": "flaky-service", "command": "{python} demo/flaky_service.py",
+      "policy": "always", "max_retries": 5, "backoff_base": 1, "backoff_max": 8, "stable_after": 15 },
+    { "name": "always-fails", "command": "{python} demo/always_fails.py",
+      "policy": "on-failure", "max_retries": 3, "backoff_base": 1 },
+    { "name": "cpu-burner", "command": "{python} demo/cpu_burner.py",
+      "policy": "always", "cpu_limit": 40, "max_retries": 3 },
+    { "name": "memory-hog", "command": "{python} demo/memory_hog.py",
+      "policy": "always", "mem_limit_mb": 120, "max_retries": 2, "backoff_base": 2, "autostart": false }
+  ]
+}
