@@ -1,6 +1,13 @@
 # Project Report: Linux Process Watchdog and Auto-Restart System
 
-**Team members and roles:** (fill in names and who built which part)
+**Team members and roles:** 
+**Team members and roles**
+
+| Member | Role | Parts of the project | Should be able to explain |
+|---|---|---|---|
+| Amrutha | Core supervisor and systemd | Process launching, crash detection, restart policies, exponential backoff, retry limit (`Watchdog`, `_spawn`, `_exited`, `tick`), systemd service files and install script | How a crash is detected, how the restart decision is made, why backoff is used, how systemd restarts the watchdog |
+| Tanvi | Monitoring, alerts and storage | CPU and memory sampling from `/proc` (`_sample`, `_health`), alerts by webhook and email, logging, config and state files, automated tests | How CPU % and memory are calculated, when alerts fire, how settings and counters are saved, what each test checks |
+| Tanvitha | Interfaces and documentation | Web dashboard (`web/index.html`), REST API, CLI commands, demo programs, README, report and PPT | How the dashboard gets live data from the API, how the CLI talks to the daemon, how to run the demo scenarios |
 
 ## 1. Problem statement
 Services on Linux sometimes die because of bugs, memory exhaustion or accidental kills. Without supervision, they stay down until someone notices. The goal is a system that monitors chosen processes, restarts them automatically under controlled rules, records what happened, alerts people, and starts itself at boot.
